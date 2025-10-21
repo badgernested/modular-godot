@@ -8,6 +8,19 @@ var _output_modules = []
 var game:Node = null
 var game_scene: PackedScene = null
 
+var swap_counter = 0
+const SWAP_ID = [
+	"default",
+	"smash_the_creeps/creeps1"
+]
+
+func do_swap():
+	swap_counter += 1
+	if swap_counter > SWAP_ID.size()-1:
+		swap_counter = 0
+		
+	_load_modules(SWAP_ID[swap_counter])
+
 # Result of the input cycle
 var _input_result = {}
 
@@ -27,8 +40,9 @@ func load_game(main_scene):
 	
 	if ResourceLoader.exists("res://games/%s.tscn" % main_scene):
 		game_scene = load("res://games/%s.tscn" % main_scene)
-
+		
 		open_game()
+	
 	else:
 		
 		push_error("Could not load resource res://games/%s.tscn." % main_scene)
@@ -43,16 +57,6 @@ func open_game(io_module:String = ""):
 			if game != null && is_instance_valid(game):
 				game.queue_free()
 				await game.tree_exited            
-			
-			# clears active input and output modules
-			for c in $Input.get_children():
-				c.queue_free()
-				
-			for c in $Output.get_children():
-				c.queue_free()
-				
-			_input_modules.clear()
-			_output_modules.clear()
 			
 			# Loads scene from packed scene
 			game = game_scene.instantiate()
@@ -76,7 +80,7 @@ func open_game(io_module:String = ""):
 		push_error("Game scene has not been initialized.")
 
 func reload_game():
-	open_game()
+	open_game(SWAP_ID[swap_counter])
 
 ## Reloads the current loaded modules based on module set name
 
@@ -85,6 +89,16 @@ func _load_modules(module) -> void:
 	
 	var input = []
 	var output = []
+	
+	# clears active input and output modules
+	for c in $Input.get_children():
+		c.queue_free()
+		
+	for c in $Output.get_children():
+		c.queue_free()
+		
+	_input_modules.clear()
+	_output_modules.clear()
 	
 	$Process.process_mode = Node.PROCESS_MODE_DISABLED
 	$Output.process_mode = Node.PROCESS_MODE_DISABLED
@@ -194,12 +208,23 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	
-	# Gets the input result
-	_input_result = game.validate_input(get_input_result(_output_result))
-	_output_result = _queued_output_result
-	_queued_output_result = {}
+	# swapping is done separately so no other processing occurs
+	if Input.is_action_just_pressed("SWAPPER"):
+		process_mode = PROCESS_MODE_DISABLED
+		
+		do_swap()
+		
+		await get_tree().process_frame
+		process_mode = PROCESS_MODE_INHERIT
+		
+	else:
 	
-	# Processes game logic
-	game.do_process(delta)
-	# Generates the output	
-	generate_output(_output_result)
+		# Gets the input result
+		_input_result = game.validate_input(get_input_result(_output_result))
+		_output_result = _queued_output_result
+		_queued_output_result = {}
+		
+		# Processes game logic
+		game.do_process(delta)
+		# Generates the output	
+		generate_output(_output_result)
