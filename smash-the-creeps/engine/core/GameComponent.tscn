@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://c8varijuyevey"]
+
+[ext_resource type="Script" uid="uid://bgwdofb2irbl3" path="res://engine/core/game.gd" id="1_diwec"]
+
+[node name="Game" type="Node"]
+script = ExtResource("1_diwec")
+
+[node name="Input" type="Node" parent="."]
+process_mode = 4
+
+[node name="Process" type="Node" parent="."]
+
+[node name="Output" type="Node" parent="."]

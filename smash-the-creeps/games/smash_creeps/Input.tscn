@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://t58h5fsveya4"]
+
+[ext_resource type="Script" uid="uid://b7nvg21lvqek6" path="res://games/smash_creeps/input.gd" id="1_mje3p"]
+
+[node name="Input" type="Node2D"]
+script = ExtResource("1_mje3p")

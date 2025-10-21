@@ -1,0 +1,71 @@
+So how the server works is this.
+
+There are three servers for handling the input/process/output cycle.
+
+Input state is set at the beginning of the step. this is a virtual state of inputs, not physical key inputs. This can also be used to apply limitations such as acceleration and ranges
+
+Process state uses the values from the input state and updated the internal state of variables in the game.
+
+Output state sends a message to output controllers to express the output to the player.
+
+#################
+
+Each UI has the following components:
+
+Process State Servlet - this code is integrated as part of the game as the "closed" section of the game. Modders cannot edit this part of the game since it changes core functionality.
+
+Interface I/O Controller - This is the general input/output controller which is overridden by modders. To override it, have the same name as the original name in the documentation. This should be made visible in documentation or a debugger mode. This controller defines which input and output modules are used. These are first searched for in the user's directory, then searched for within the game's own package. If not located, throw an error visible to the user and in a log.
+
+Input Modules - Modules that handle inputs, such as keyboard, mouse, controller etc., they should transform the raw inputs into abstract delta values that indicate how the game's state is changed over time relative to the input (for example, representing inputs as movement directions or UI inputs)
+
+Output Modules - Modules that handle outputs. Think of these as producing individual cinema - for example, the main output should look how you expect the game to look. But why not try making a text based output too? These take variables output by the Process State Servlet and map them to outputs.
+
+#################
+
+
+GRAPH REPRESENTING INSIDE/OUTSIDE BOUNDARIES
+
+
+INPUT
+
+||
+||
+
+INTERFACE INPUT CONTROLLER
+
+||
+||
+======== NOT ACCESSIBLE TO MODDERS =========
+||
+||
+
+INPUT VALIDATOR (prevents illegal range/acceleration/etc. of values)
+
+||
+||
+
+PROCESSING SERVLET (outputs output variables)
+
+||
+||
+======== END NOT ACCESSIBLE TO MODDERS =========
+
+||
+||
+
+INTERFACE OUTPUT CONTROLLER
+
+||
+||
+
+OUTPUT
+
+################
+
+Design considerations:
+
+- Input/Output modules should be able to be built in Godot as separate packages
+- Input/Output modules must contain only whitelisted commands only
+- PCK files look like the way to go with dealing with modules. (https://docs.godotengine.org/en/stable/tutorials/export/exporting_pcks.html)
+- Default modules should be baked into the game, not distributed as modules.
+- All assets in the game should have a naming convention that separates them some way from the naming convention of mod PCK files 

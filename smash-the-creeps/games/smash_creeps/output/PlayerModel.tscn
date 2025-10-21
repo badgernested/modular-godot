@@ -1,0 +1,51 @@
+[gd_scene load_steps=5 format=3 uid="uid://bbk8xs4a8rnnd"]
+
+[ext_resource type="Script" uid="uid://bbe1yrxklff44" path="res://games/smash_creeps/output/player_model.gd" id="1_gbou6"]
+[ext_resource type="PackedScene" uid="uid://dmom07owk18xx" path="res://games/assets/art/player.glb" id="1_vtbca"]
+
+[sub_resource type="Animation" id="2"]
+length = 1.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot/Character:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.22, 0.7, 1.18),
+"transitions": PackedFloat32Array(0.435275, 2.21914, 1),
+"update": 0,
+"values": [Vector3(0, 0.329753, 0), Vector3(0, 0.660351, 0), Vector3(0, 0.349734, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Pivot/Character:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.1, 0.46, 1.18),
+"transitions": PackedFloat32Array(0.482968, 0.535887, 1),
+"update": 0,
+"values": [Vector3(-5.0326, 0, 0), Vector3(10, 0, 0), Vector3(-10, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5n6vs"]
+_data = {
+&"float": SubResource("2")
+}
+
+[node name="PlayerModel" type="Node3D"]
+script = ExtResource("1_gbou6")
+
+[node name="Pivot" type="Node3D" parent="."]
+
+[node name="Character" parent="Pivot" instance=ExtResource("1_vtbca")]
+transform = Transform3D(1, 0, 0, 0, 0.9973611, 0.07260329, 0, -0.07260329, 0.9973611, 0, 0.6490415, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_5n6vs")
+}
+autoplay = "float"
