@@ -24,7 +24,7 @@ point_count = 5
 [node name="Main" type="Node"]
 script = ExtResource("1")
 mob_scene = ExtResource("3")
-mod_id = "creeps"
+mod_id = "smash_the_creeps/creeps1"
 default_input_module = ExtResource("3_m7eey")
 default_output_module = ExtResource("4_pbsal")
 

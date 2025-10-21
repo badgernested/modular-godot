@@ -3,7 +3,7 @@
 extends Object
 
 # This array lists the input processing modules, in order of execution
-const input_modules = ["default/InputModule"]
+const input_modules = ["creeps1/InputModule"]
 
 # This array lists the output processing modules, in order of execution
-const output_modules = ["default/OutputModule"]
+const output_modules = ["creeps1/OutputModule"]

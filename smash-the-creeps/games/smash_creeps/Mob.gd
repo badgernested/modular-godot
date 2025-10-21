@@ -9,6 +9,7 @@ signal squashed
 @export var max_speed = 18
 
 var id_number = 0
+var defeated = false
 
 ## ID counter
 static var id_counter = 0
@@ -26,15 +27,15 @@ func _exit_tree() -> void:
 		
 	mobs[id_number] = {}
 
-	GameController.set_output("mobs", mobs)
+	GameController.set_queue_output("mobs", mobs)
 	
 func get_all_mobs_stored():
 	var mobs:Dictionary = {}
 	
-	if GameController.has_output("mobs"):
+	if GameController.has_queue_output("mobs"):
 		# You have to pull the variable out and set it there, since its stored
 		# in a collection.
-		mobs = GameController.get_output("mobs")
+		mobs = GameController.get_queue_output("mobs")
 		
 	return mobs
 	
@@ -52,7 +53,7 @@ func update_mob_property(name, value):
 func pack_data() -> Dictionary:
 	var data = {}
 	
-	if $VisibleOnScreenNotifier3D.is_on_screen() && is_instance_valid(self):
+	if is_instance_valid(self):
 		data["position"] = position
 		data["rotation"] = rotation
 		

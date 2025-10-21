@@ -1,6 +1,6 @@
 extends "res://engine/core/scripts/input.gd"
 
-func do_process():
+func do_process(output:Dictionary):
 	var input_result = {
 		"move" : Vector3.ZERO,
 		"retry" : false,

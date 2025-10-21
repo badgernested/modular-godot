@@ -9,6 +9,7 @@ extends Node
 
 var score = 0
 var defeated = false
+var score_flag = false
 
 func validate_input(input:Dictionary) -> Dictionary:
 	
@@ -38,17 +39,20 @@ func do_process(delta) -> void:
 	
 	for c in $Mobs.get_children():
 		var data_pack = c.pack_data()
-		if !mobs.has("mob%s" % c.id_number):
-			mobs["mob%s" % c.id_number] = data_pack
+		if !mobs.has(c.id_number):
+			mobs[c.id_number] = data_pack
 		
 	GameController.set_output("mobs", mobs)
+	if score_flag:
+		score_flag = false
+		GameController.set_output("score", score)
 		
 func reset_scene():
 	GameController.reload_game()
 
 func increment_score():
 	score +=1
-	GameController.set_output("score", score)
+	score_flag = true
 
 func _on_mob_timer_timeout():
 	# Create a new instance of the Mob scene.
@@ -71,4 +75,4 @@ func _on_mob_timer_timeout():
 func _on_player_hit():
 	$MobTimer.stop()
 	defeated = true
-	GameController.set_output("defeated", true)
+	GameController.set_queue_output("defeated", true)

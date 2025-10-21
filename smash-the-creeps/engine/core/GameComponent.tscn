@@ -9,5 +9,7 @@ script = ExtResource("1_diwec")
 process_mode = 4
 
 [node name="Process" type="Node" parent="."]
+process_mode = 4
 
 [node name="Output" type="Node" parent="."]
+process_mode = 4

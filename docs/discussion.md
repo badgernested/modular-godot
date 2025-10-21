@@ -90,7 +90,8 @@ Note: *This demo is not intended as a demonstration of accessibility,* only a de
 
 Note: All files for this section are located in ``games/assets/smash_creeps``.
 
-[Demo Repository]()
+[Game Repository](https://github.com/badgernested/modular-godot/tree/main/smash-the-creeps)
+[Game Extensions Repository](https://github.com/badgernested/modular-godot/tree/main/creeps-exp)
 
 [Squash the Creeps](https://godotengine.org/asset-library/asset/2751) is a Demo game project provided by Godot to demonstrate the basic features of the engine. It features a small creature smashing on creeps by navigating the map and jumping on them. The player accumulates a score until they are hit by one of the creeps, which opens a retry screen. This proof of concept is intended to demonstrate the basic potential of using a modular deisgn with emphasis on separation of user I/O layer from the game's processing layer.
 
@@ -106,7 +107,9 @@ I started by constructing the game object loader. For this game, there is no nee
 - Output
 ```
 
-These are primarily used for organizational purposes. Input's processing is disabled, but Process and Output's processing must be enabled for game functionality to work. The scene is saved as a Global with the name GameComponent so that it can be accessed throughout the application
+These are primarily used for organizational purposes. Input's processing is disabled, but Process and Output's processing must be enabled for game functionality to work. The scene is saved as a Global with the name GameComponent so that it can be accessed throughout the application.
+
+The game is loaded with the method ``load_game()``. This method can take an optional io_module id so that it can load a different module than the default. This is not normally behavior that would be useful, since typically you only would want one external ID per user interface, but for this demo, it allows for the cycling of input models.
 
 Every ``_process()`` frame, the input is polled, the game is procssed and the output state is set.
 
@@ -125,6 +128,8 @@ jump: false
 ```
 
 Notice that this is not simply just polling for the state of the inputs, but the interface represents an abstraction of what input should ultimately be interpreted as. In this case, ``movement`` consolidates the keypad buttons as a single movement variable, since they are all used for basic movement. This interface makes it easier to implement other input models, which will be demonstrated below.
+
+Notably, the input module takes the last frame's output as an argument. This is because in some input models, such as the mouse, it requires information about the current position of objects to make an appropriate calculation.
 
 After the input module polls the state of the inputs and outputs its state, the state is validated to ensure that the input stays within appropriate limits and acceleration. This helps prevent cheating behaviors. Currently, this only normalizes the Vector3 input to ensure that it stays within range.
 

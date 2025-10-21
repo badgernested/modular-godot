@@ -1,0 +1,63 @@
+[gd_scene load_steps=5 format=3 uid="uid://dyet5o71faci5"]
+
+[ext_resource type="Script" uid="uid://cbg2plehkb1fc" path="res://ext/creeps1/output_module.gd" id="1_lwo6k"]
+[ext_resource type="PackedScene" uid="uid://3e611qd6om24" path="res://ext/creeps1/Player.tscn" id="2_5ekxu"]
+
+[sub_resource type="Gradient" id="Gradient_5ekxu"]
+colors = PackedColorArray(0.61912113, 0.9157422, 0.7820434, 1, 1, 0.94633335, 0.77, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_kbg5w"]
+gradient = SubResource("Gradient_5ekxu")
+width = 1200
+height = 700
+
+[node name="OutputModule" type="Node2D"]
+script = ExtResource("1_lwo6k")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(1200, 700)
+offset_left = -32.0
+offset_top = -14.0
+offset_right = 1168.0
+offset_bottom = 686.0
+scale = Vector2(0.05, 0.05)
+texture = SubResource("GradientTexture2D_kbg5w")
+
+[node name="Mobs" type="Node2D" parent="."]
+
+[node name="Player" parent="." instance=ExtResource("2_5ekxu")]
+position = Vector2(42, 23)
+
+[node name="Camera" type="Node2D" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="Camera"]
+position = Vector2(-2, 3)
+zoom = Vector2(20, 20)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="UI"]
+offset_left = 23.0
+offset_top = 7.0
+offset_right = 114.0
+offset_bottom = 41.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "SCORE: 0"
+
+[node name="Retry" type="ColorRect" parent="UI"]
+visible = false
+offset_left = -129.0
+offset_top = 142.0
+offset_right = 1218.0
+offset_bottom = 472.0
+color = Color(0, 0, 0, 0.5372549)
+
+[node name="Label" type="Label" parent="UI/Retry"]
+layout_mode = 0
+offset_left = 386.0
+offset_top = 80.0
+offset_right = 1022.0
+offset_bottom = 217.0
+theme_override_font_sizes/font_size = 100
+text = "Click to Retry"
